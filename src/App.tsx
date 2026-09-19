@@ -1,65 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-
-// ==================== ЗВУКИ ====================
-const playSound = (type: 'correct' | 'wrong' | 'reveal' | 'win' | 'tick') => {
-  try {
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    switch (type) {
-      case 'correct':
-        osc.frequency.setValueAtTime(523, ctx.currentTime);
-        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
-        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.4);
-        break;
-      case 'wrong':
-        osc.frequency.setValueAtTime(200, ctx.currentTime);
-        osc.frequency.setValueAtTime(150, ctx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.3);
-        break;
-      case 'reveal':
-        osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.3);
-        break;
-      case 'win':
-        osc.frequency.setValueAtTime(523, ctx.currentTime);
-        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.15);
-        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.3);
-        osc.frequency.setValueAtTime(1047, ctx.currentTime + 0.45);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.8);
-        break;
-      case 'tick':
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.05);
-        break;
-    }
-  } catch {
-    // Звук не поддерживается
-  }
-};
+import { useState } from 'react';
 
 // ==================== ТИПЫ ====================
-type GameScreen = 'start' | 'round-intro' | 'flag' | 'true-false' | 'emoji' | 'blitz' | 'final';
+type GameScreen = 'start' | 'round-intro' | 'flag' | 'true-false' | 'emoji' | 'capitals' | 'final';
 type Team = 'team1' | 'team2' | 'team3';
 
 interface Scores {
@@ -69,7 +11,7 @@ interface Scores {
 }
 
 interface FlagQuestion {
-  flag: string;
+  flagCode: string;
   options: string[];
   correct: number;
   funFact: string;
@@ -88,20 +30,23 @@ interface EmojiQuestion {
   correct: number;
 }
 
-interface BlitzQuestion {
-  question: string;
+interface CapitalQuestion {
+  country: string;
   options: string[];
   correct: number;
+  funFact: string;
 }
 
 // ==================== ДАННЫЕ ====================
 const flagQuestions: FlagQuestion[] = [
-  { flag: '🇯🇵', options: ['Китай', 'Япония', 'Корея', 'Вьетнам'], correct: 1, funFact: 'Япония — страна восходящего солнца ☀️' },
-  { flag: '🇧🇷', options: ['Аргентина', 'Колумбия', 'Бразилия', 'Перу'], correct: 2, funFact: 'В Бразилии больше всего футбольных стадионов в мире ⚽' },
-  { flag: '🇮🇹', options: ['Франция', 'Ирландия', 'Мексика', 'Италия'], correct: 3, funFact: 'Италия имеет больше всего объектов ЮНЕСКО в мире 🏛️' },
-  { flag: '🇨🇦', options: ['Канада', 'Дания', 'Норвегия', 'Швеция'], correct: 0, funFact: 'В Канаде больше озёр, чем во всех остальных странах вместе 🏔️' },
-  { flag: '🇦🇺', options: ['Новая Зеландия', 'Индонезия', 'Австралия', 'Фиджи'], correct: 2, funFact: 'Австралия — единственный континент-страна 🦘' },
-  { flag: '🇪🇬', options: ['Ливия', 'Египет', 'Судан', 'Саудовская Аравия'], correct: 1, funFact: 'Пирамиды строили не рабы, а наёмные рабочие! 🏗️' },
+  { flagCode: 'jp', options: ['Китай', 'Япония', 'Корея', 'Вьетнам'], correct: 1, funFact: 'Япония — страна восходящего солнца ☀️' },
+  { flagCode: 'br', options: ['Аргентина', 'Колумбия', 'Бразилия', 'Перу'], correct: 2, funFact: 'В Бразилии больше всего футбольных стадионов в мире ⚽' },
+  { flagCode: 'it', options: ['Франция', 'Ирландия', 'Мексика', 'Италия'], correct: 3, funFact: 'Италия имеет больше всего объектов ЮНЕСКО в мире 🏛️' },
+  { flagCode: 'ca', options: ['Канада', 'Дания', 'Норвегия', 'Швеция'], correct: 0, funFact: 'В Канаде больше озёр, чем во всех остальных странах вместе 🏔️' },
+  { flagCode: 'au', options: ['Новая Зеландия', 'Индонезия', 'Австралия', 'Фиджи'], correct: 2, funFact: 'Австралия — единственный континент-страна 🦘' },
+  { flagCode: 'eg', options: ['Ливия', 'Египет', 'Судан', 'Саудовская Аравия'], correct: 1, funFact: 'Пирамиды строили не рабы, а наёмные рабочие! 🏗️' },
+  { flagCode: 'mx', options: ['Мексика', 'Испания', 'Португалия', 'Колумбия'], correct: 0, funFact: 'В Мексике изобрели шоколад! 🍫' },
+  { flagCode: 'kr', options: ['Япония', 'Китай', 'Южная Корея', 'Таиланд'], correct: 2, funFact: 'Корея — родина к-попа и Samsung 🎶' },
 ];
 
 const trueFalseQuestions: TrueFalseQuestion[] = [
@@ -111,6 +56,8 @@ const trueFalseQuestions: TrueFalseQuestion[] = [
   { statement: 'Самая длинная река в мире — Нил', isTrue: false, explanation: 'По последним данным — Амазонка! Но учёные до сих пор спорят 🤷' },
   { statement: 'В Антарктиде есть действующий вулкан', isTrue: true, explanation: 'Вулкан Эребус извергается уже более 100 лет! 🌋' },
   { statement: 'Озеро Байкал содержит 20% всей пресной воды планеты', isTrue: true, explanation: 'Самое глубокое озеро в мире — 1642 метра! 💧' },
+  { statement: 'В Исландии нет комаров', isTrue: true, explanation: 'Из-за резких перепадов температуры комары там не выживают! 🦟❌' },
+  { statement: 'Великая Китайская стена видна из космоса', isTrue: false, explanation: 'Это миф! Стена слишком узкая, чтобы увидеть её с орбиты 🛰️' },
 ];
 
 const emojiQuestions: EmojiQuestion[] = [
@@ -120,17 +67,18 @@ const emojiQuestions: EmojiQuestion[] = [
   { emojis: '🦘🏄‍♂️🪃', answer: 'Австралия', options: ['Новая Зеландия', 'Гавайи', 'Австралия', 'ЮАР'], correct: 2 },
   { emojis: '🍣🗾🌸', answer: 'Япония', options: ['Китай', 'Таиланд', 'Япония', 'Корея'], correct: 2 },
   { emojis: '🎭🏛️🫒', answer: 'Греция', options: ['Италия', 'Греция', 'Турция', 'Хорватия'], correct: 1 },
+  { emojis: '🌮🏖️💀', answer: 'Мексика', options: ['Бразилия', 'Мексика', 'Куба', 'Колумбия'], correct: 1 },
 ];
 
-const blitzQuestions: BlitzQuestion[] = [
-  { question: 'Самая большая страна в мире по площади?', options: ['Канада', 'Китай', 'Россия', 'США'], correct: 2 },
-  { question: 'Столица Австралии?', options: ['Сидней', 'Мельбурн', 'Канберра', 'Перт'], correct: 2 },
-  { question: 'Какой океан самый большой?', options: ['Атлантический', 'Тихий', 'Индийский', 'Северный Ледовитый'], correct: 1 },
-  { question: 'Сколько континентов на Земле?', options: ['5', '6', '7', '8'], correct: 2 },
-  { question: 'Самый маленький материк?', options: ['Европа', 'Антарктида', 'Австралия', 'Южная Америка'], correct: 2 },
-  { question: 'В какой стране находится самый большой водопад (по ширине)?', options: ['Бразилия', 'Замбия/Зимбабве', 'США', 'Канада'], correct: 1 },
-  { question: 'Какая страна имеет форму сапога?', options: ['Греция', 'Италия', 'Португалия', 'Чили'], correct: 1 },
-  { question: 'Самое глубокое озеро в мире?', options: ['Каспийское', 'Танганьика', 'Байкал', 'Виктория'], correct: 2 },
+const capitalQuestions: CapitalQuestion[] = [
+  { country: '🇦🇺 Австралия', options: ['Сидней', 'Мельбурн', 'Канберра', 'Перт'], correct: 2, funFact: 'Многие думают Сидней, но нет — Канберра! 🏛️' },
+  { country: '🇧🇷 Бразилия', options: ['Рио-де-Жанейро', 'Сан-Паулу', 'Буэнос-Айрес', 'Бразилиа'], correct: 3, funFact: 'Столица специально построена с нуля в 1960 году! 🏗️' },
+  { country: '🇨🇦 Канада', options: ['Торонто', 'Ванкувер', 'Оттава', 'Монреаль'], correct: 2, funFact: 'Оттава — маленький город, но именно она столица! 🍁' },
+  { country: '🇹🇷 Турция', options: ['Стамбул', 'Анкара', 'Измир', 'Анталья'], correct: 1, funFact: 'Стамбул — самый известный, но столица — Анкара! 🕌' },
+  { country: '🇲🇽 Мексика', options: ['Канкун', 'Мехико', 'Гвадалахара', 'Акапулько'], correct: 1, funFact: 'Мехико — один из крупнейших городов мира! 🌮' },
+  { country: '🇿🇦 ЮАР', options: ['Кейптаун', 'Йоханнесбург', 'Претория', 'Дурбан'], correct: 2, funFact: 'У ЮАР целых 3 столицы! Претория — административная 🇿🇦' },
+  { country: '🇲🇳 Монголия', options: ['Ховд', 'Улан-Батор', 'Эрдэнэт', 'Дархан'], correct: 1, funFact: 'Самая малонаселённая столица в мире! 🐎' },
+  { country: '🇳🇿 Новая Зеландия', options: ['Окленд', 'Крайстчерч', 'Веллингтон', 'Квинстаун'], correct: 2, funFact: 'Веллингтон — самая южная столица в мире! 🥝' },
 ];
 
 // ==================== КОМПОНЕНТ ====================
@@ -140,31 +88,23 @@ export default function App() {
   const [scores, setScores] = useState<Scores>({ team1: 0, team2: 0, team3: 0 });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [blitzTimer, setBlitzTimer] = useState(15);
-  const [blitzActive, setBlitzActive] = useState(false);
   const [answeredTeams, setAnsweredTeams] = useState<Set<Team>>(new Set());
   const [roundScores, setRoundScores] = useState<Scores>({ team1: 0, team2: 0, team3: 0 });
   const [currentRound, setCurrentRound] = useState(1);
   const [confetti, setConfetti] = useState(false);
 
-  const rounds: GameScreen[] = ['flag', 'true-false', 'emoji', 'blitz'];
-  const roundNames = ['🏳️ Угадай Флаг', '🤔 Правда или Фейк', '🌍 Страна по Эмодзи', '⚡ Блиц'];
+  const rounds: GameScreen[] = ['flag', 'true-false', 'emoji', 'capitals'];
+  const roundNames = ['🏳️ Угадай Флаг', '🤔 Правда или Фейк', '🌍 Страна по Эмодзи', '🏛️ Столицы мира'];
 
-  // Таймер для блица
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    if (blitzActive && blitzTimer > 0) {
-      interval = setInterval(() => {
-        setBlitzTimer(prev => {
-          if (prev <= 5 && prev > 0) playSound('tick');
-          return prev - 1;
-        });
-      }, 1000);
-    } else if (blitzTimer === 0) {
-      setBlitzActive(false);
+  const getQuestionsCount = (round: number) => {
+    switch (rounds[round - 1]) {
+      case 'flag': return flagQuestions.length;
+      case 'true-false': return trueFalseQuestions.length;
+      case 'emoji': return emojiQuestions.length;
+      case 'capitals': return capitalQuestions.length;
+      default: return 0;
     }
-    return () => clearInterval(interval);
-  }, [blitzActive, blitzTimer]);
+  };
 
   const startGame = () => {
     setScreen('round-intro');
@@ -178,24 +118,15 @@ export default function App() {
     setShowAnswer(false);
     setRoundScores({ team1: 0, team2: 0, team3: 0 });
     setAnsweredTeams(new Set());
-    if (rounds[currentRound - 1] === 'blitz') {
-      setBlitzTimer(15);
-      setBlitzActive(false);
-    }
   };
 
-  const nextQuestion = useCallback(() => {
-    const questionsPerRound = [flagQuestions.length, trueFalseQuestions.length, emojiQuestions.length, blitzQuestions.length];
-    const maxQ = questionsPerRound[currentRound - 1];
+  const nextQuestion = () => {
+    const maxQ = getQuestionsCount(currentRound);
 
     if (currentQuestion < maxQ - 1) {
       setCurrentQuestion(prev => prev + 1);
       setShowAnswer(false);
       setAnsweredTeams(new Set());
-      if (rounds[currentRound - 1] === 'blitz') {
-        setBlitzTimer(15);
-        setBlitzActive(false);
-      }
     } else {
       // Раунд окончен
       setScores(prev => ({
@@ -212,7 +143,7 @@ export default function App() {
         playSound('win');
       }
     }
-  }, [currentQuestion, currentRound, roundScores]);
+  };
 
   const addScore = (team: Team) => {
     if (answeredTeams.has(team)) return;
@@ -299,7 +230,7 @@ export default function App() {
             {currentRound === 1 && 'Угадайте страну по флагу! Команды поднимают руку.'}
             {currentRound === 2 && 'Верите ли вы этому факту? Правда или фейк!'}
             {currentRound === 3 && 'Какая страна скрывается за эмодзи? 🤔'}
-            {currentRound === 4 && 'Быстрые вопросы! Кто первый — тот и отвечает!'}
+            {currentRound === 4 && 'Знаете ли вы столицы мира? Покажите свои знания!'}
           </p>
 
           {/* Табло */}
@@ -329,10 +260,16 @@ export default function App() {
     const q = flagQuestions[currentQuestion];
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 p-4 flex flex-col">
-        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} />
+        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} currentQuestion={currentQuestion} totalQuestions={flagQuestions.length} />
 
         <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
-          <div className="text-9xl mb-6">{q.flag}</div>
+          <div className="mb-6 rounded-xl overflow-hidden shadow-2xl border-4 border-white/20">
+            <img
+              src={`https://flagcdn.com/w640/${q.flagCode}.png`}
+              alt="Флаг"
+              className="w-64 h-44 md:w-80 md:h-56 object-cover"
+            />
+          </div>
           <h3 className="text-2xl text-white font-bold mb-6">Какая это страна?</h3>
 
           <div className="grid grid-cols-2 gap-4 w-full max-w-lg mb-6">
@@ -377,7 +314,7 @@ export default function App() {
     const q = trueFalseQuestions[currentQuestion];
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 p-4 flex flex-col">
-        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} />
+        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} currentQuestion={currentQuestion} totalQuestions={trueFalseQuestions.length} />
 
         <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
           <div className="text-6xl mb-6">🤔</div>
@@ -427,7 +364,7 @@ export default function App() {
     const q = emojiQuestions[currentQuestion];
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-900 via-red-900 to-pink-900 p-4 flex flex-col">
-        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} />
+        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} currentQuestion={currentQuestion} totalQuestions={emojiQuestions.length} />
 
         <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
           <div className="text-7xl md:text-8xl mb-6 tracking-wider">{q.emojis}</div>
@@ -464,24 +401,17 @@ export default function App() {
     );
   }
 
-  // РАУНД: БЛИЦ
-  if (screen === 'blitz') {
-    const q = blitzQuestions[currentQuestion];
+  // РАУНД: СТОЛИЦЫ
+  if (screen === 'capitals') {
+    const q = capitalQuestions[currentQuestion];
     return (
-      <div className="min-h-screen bg-gradient-to-br from-yellow-900 via-orange-900 to-red-900 p-4 flex flex-col">
-        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} />
+      <div className="min-h-screen bg-gradient-to-br from-violet-900 via-purple-900 to-fuchsia-900 p-4 flex flex-col">
+        <ScoreBar scores={scores} teamNames={teamNames} roundScores={roundScores} currentRound={currentRound} roundNames={roundNames} currentQuestion={currentQuestion} totalQuestions={capitalQuestions.length} />
 
         <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
-          {/* Таймер */}
-          <div className={`text-6xl font-black mb-4 transition-colors ${
-            blitzTimer <= 5 ? 'text-red-400 animate-pulse' : blitzTimer <= 10 ? 'text-yellow-400' : 'text-white'
-          }`}>
-            ⏱️ {blitzTimer}с
-          </div>
-
-          <h3 className="text-xl md:text-3xl text-white font-bold mb-8 text-center max-w-2xl">
-            {q.question}
-          </h3>
+          <div className="text-6xl mb-4">🏛️</div>
+          <h3 className="text-2xl md:text-3xl text-white font-bold mb-2">Какая столица у страны?</h3>
+          <div className="text-3xl md:text-4xl text-yellow-300 font-black mb-8">{q.country}</div>
 
           <div className="grid grid-cols-2 gap-4 w-full max-w-lg mb-6">
             {q.options.map((opt, i) => (
@@ -500,16 +430,11 @@ export default function App() {
             ))}
           </div>
 
-          <div className="flex gap-3 mb-4">
-            {!blitzActive && !showAnswer && (
-              <button
-                onClick={() => setBlitzActive(true)}
-                className="bg-yellow-500 text-black font-bold px-6 py-2 rounded-full hover:scale-105 transition-transform"
-              >
-                ▶️ Старт таймера
-              </button>
-            )}
-          </div>
+          {showAnswer && (
+            <div className="bg-purple-400/20 border border-purple-400/50 rounded-xl p-4 mb-4 text-center">
+              <p className="text-purple-200 text-lg">💡 {q.funFact}</p>
+            </div>
+          )}
 
           <QuestionControls
             showAnswer={showAnswer}
@@ -581,19 +506,72 @@ export default function App() {
   return null;
 }
 
+// ==================== ЗВУКИ ====================
+const playSound = (type: 'correct' | 'reveal' | 'win' | 'tick') => {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    switch (type) {
+      case 'correct':
+        osc.frequency.setValueAtTime(523, ctx.currentTime);
+        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.4);
+        break;
+      case 'reveal':
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.3);
+        break;
+      case 'win':
+        osc.frequency.setValueAtTime(523, ctx.currentTime);
+        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.3);
+        osc.frequency.setValueAtTime(1047, ctx.currentTime + 0.45);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.8);
+        break;
+      case 'tick':
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.05);
+        break;
+    }
+  } catch {
+    // Звук не поддерживается
+  }
+};
+
 // ==================== ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ ====================
 
-function ScoreBar({ scores, teamNames, roundScores, currentRound, roundNames }: {
+function ScoreBar({ scores, teamNames, roundScores, currentRound, roundNames, currentQuestion, totalQuestions }: {
   scores: Scores;
   teamNames: { team1: string; team2: string; team3: string };
   roundScores: Scores;
   currentRound: number;
   roundNames: string[];
+  currentQuestion: number;
+  totalQuestions: number;
 }) {
   return (
     <div className="flex items-center justify-between bg-black/30 backdrop-blur rounded-xl p-3 mb-4">
       <div className="text-white font-bold text-sm">
         {roundNames[currentRound - 1]}
+        <span className="text-white/50 ml-2">({currentQuestion + 1}/{totalQuestions})</span>
       </div>
       <div className="flex gap-3">
         {(['team1', 'team2', 'team3'] as Team[]).map((team, i) => (

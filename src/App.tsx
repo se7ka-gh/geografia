@@ -227,43 +227,136 @@ export default function App() {
         {/* ===== START SCREEN ===== */}
         {screen === 'start' && (
           <motion.div key="start" variants={pageVariants} initial="initial" animate="animate" exit="exit"
-            className="min-h-screen flex items-center justify-center p-6 md:p-12 relative">
+            className="min-h-screen flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
             <HeroBackground />
-            <div className="max-w-xl w-full relative z-10">
-              <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+            
+            {/* Decorative Elements */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.1, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.2 }}
+              className="absolute top-20 left-10 w-32 h-32 rounded-full blur-3xl"
+              style={{ background: 'var(--team-1)' }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.1, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.4 }}
+              className="absolute bottom-20 right-10 w-40 h-40 rounded-full blur-3xl"
+              style={{ background: 'var(--team-2)' }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.08, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.6 }}
+              className="absolute top-1/2 left-1/4 w-48 h-48 rounded-full blur-3xl"
+              style={{ background: 'var(--team-3)' }}
+            />
+
+            <div className="max-w-2xl w-full relative z-10">
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
                 
-                {/* Label */}
-                <div className="flex items-center gap-3 mb-8">
-                  <Globe size={20} style={{ color: 'var(--accent-primary)' }} strokeWidth={1.5} />
-                  <span className="text-xs tracking-[0.2em] uppercase font-medium" style={{ color: 'var(--text-muted)' }}>
+                {/* Badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+                  style={{ 
+                    background: 'var(--accent-muted)', 
+                    border: '1px solid var(--accent-border)' 
+                  }}
+                >
+                  <Globe size={16} style={{ color: 'var(--accent-primary)' }} strokeWidth={1.5} />
+                  <span className="text-xs tracking-[0.15em] uppercase font-medium" style={{ color: 'var(--accent-primary)' }}>
                     Интерактивный урок географии
                   </span>
-                </div>
+                </motion.div>
 
                 {/* Title */}
-                <h1 className="font-display text-5xl md:text-7xl font-bold leading-[1.1] mb-6"
-                  style={{ color: 'var(--text-primary)' }}>
+                <motion.h1 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="font-display text-6xl md:text-8xl font-bold leading-[1.05] mb-6"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   Гео-Баттл
-                </h1>
+                </motion.h1>
 
-                <p className="text-lg md:text-xl mb-12 text-measure" style={{ color: 'var(--text-muted)', lineHeight: 1.7 }}>
+                {/* Subtitle */}
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-xl md:text-2xl mb-4 text-measure" 
+                  style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}
+                >
                   Четыре раунда. Три команды. Один победитель.
-                  Проверьте свои знания о планете.
-                </p>
+                </motion.p>
+
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="text-lg mb-12" 
+                  style={{ color: 'var(--text-muted)', lineHeight: 1.7 }}
+                >
+                  Проверьте свои знания о планете в формате соревнования
+                </motion.p>
+
+                {/* Stats */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                  className="grid grid-cols-3 gap-4 mb-12"
+                >
+                  {[
+                    { label: 'Раунда', value: '4' },
+                    { label: 'Вопросов', value: '46' },
+                    { label: 'Секунд', value: '20' },
+                  ].map((stat, i) => (
+                    <div key={i} className="text-center p-4 rounded-xl"
+                      style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)' }}>
+                      <div className="text-3xl font-bold font-mono mb-1" style={{ color: 'var(--accent-primary)' }}>
+                        {stat.value}
+                      </div>
+                      <div className="text-xs uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
 
                 {/* Team Names */}
-                <div className="mb-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="mb-12"
+                >
                   <p className="text-xs tracking-[0.15em] uppercase mb-5" style={{ color: 'var(--text-subtle)' }}>
                     Названия команд
                   </p>
-                  <motion.div variants={staggerContainer} initial="initial" animate="animate" className="space-y-4">
+                  <div className="space-y-3">
                     {(['team1', 'team2', 'team3'] as Team[]).map((team, i) => (
-                      <motion.div key={team} variants={staggerItem}
-                        className="flex items-center gap-4 p-4 rounded-xl transition-all"
-                        style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)' }}>
+                      <motion.div 
+                        key={team}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 + i * 0.1 }}
+                        className="flex items-center gap-4 p-4 rounded-xl transition-all hover:scale-[1.02]"
+                        style={{ 
+                          background: 'var(--bg-secondary)', 
+                          border: '1px solid var(--border-subtle)',
+                          boxShadow: 'var(--shadow-sm)'
+                        }}
+                      >
                         <div className="w-3 h-3 rounded-full shrink-0" style={{
-                          background: [`var(--team-1)`, `var(--team-2)`, `var(--team-3)`][i]
+                          background: [`var(--team-1)`, `var(--team-2)`, `var(--team-3)`][i],
+                          boxShadow: `0 0 12px ${[`var(--team-1-glow)`, `var(--team-2-glow)`, `var(--team-3-glow)`][i]}`
                         }} />
                         <input
                           type="text"
@@ -275,22 +368,25 @@ export default function App() {
                         />
                       </motion.div>
                     ))}
-                  </motion.div>
-                </div>
+                  </div>
+                </motion.div>
 
                 {/* Start Button */}
                 <motion.button
-                  whileHover={{ scale: 1.02, y: -2 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2 }}
+                  whileHover={{ scale: 1.03, y: -3 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => { setScreen('round-intro'); setCurrentRound(1); setScores({ team1: 0, team2: 0, team3: 0 }); }}
-                  className="w-full flex items-center justify-center gap-3 py-4 px-8 rounded-xl font-medium text-base transition-all"
+                  className="w-full flex items-center justify-center gap-3 py-5 px-8 rounded-xl font-medium text-base transition-all"
                   style={{
                     background: 'var(--accent-primary)',
                     color: 'var(--bg-primary)',
                     boxShadow: 'var(--shadow-glow)',
                   }}
                 >
-                  <Play size={18} strokeWidth={2} />
+                  <Play size={20} strokeWidth={2} />
                   Начать баттл
                 </motion.button>
               </motion.div>
@@ -753,35 +849,50 @@ function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNa
             )}
           </AnimatePresence>
 
-          {/* Next Button */}
-          <AnimatePresence>
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-3">
+            {!showResult && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onNext}
+                className="touch-target inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all"
+                style={{
+                  background: 'var(--bg-tertiary)',
+                  color: 'var(--text-muted)',
+                  border: '1px solid var(--border-medium)',
+                }}
+              >
+                Пропустить <ChevronRight size={16} strokeWidth={2} />
+              </motion.button>
+            )}
+
             {showResult && (
-              <motion.div
+              <motion.button
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="flex justify-center"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onNext}
+                className="touch-target inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium transition-all"
+                style={{
+                  background: 'var(--accent-primary)',
+                  color: 'var(--bg-primary)',
+                  boxShadow: 'var(--shadow-glow)',
+                }}
               >
-                <motion.button
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onNext}
-                  className="touch-target inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium transition-all"
-                  style={{
-                    background: 'var(--accent-primary)',
-                    color: 'var(--bg-primary)',
-                    boxShadow: 'var(--shadow-glow)',
-                  }}
-                >
-                  {currentQuestion < totalQuestions - 1 ? (
-                    <>Далее <ChevronRight size={16} strokeWidth={2} /></>
-                  ) : (
-                    <>Итоги раунда <Target size={16} strokeWidth={2} /></>
-                  )}
-                </motion.button>
-              </motion.div>
+                {currentQuestion < totalQuestions - 1 ? (
+                  <>Далее <ChevronRight size={16} strokeWidth={2} /></>
+                ) : (
+                  <>Итоги раунда <Target size={16} strokeWidth={2} /></>
+                )}
+              </motion.button>
             )}
-          </AnimatePresence>
+          </div>
         </motion.div>
       </div>
     </motion.div>

@@ -1,86 +1,203 @@
 @import "tailwindcss";
 
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-100vh) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
+/* ============================================
+   DESIGN TOKENS — Semantic CSS Variables
+   ============================================ */
+:root {
+  /* Dark theme (default) */
+  --color-bg: #0C0A09;
+  --color-surface: #1C1917;
+  --color-surface-elevated: #292524;
+  --color-border: rgba(245, 245, 244, 0.08);
+  --color-border-strong: rgba(245, 245, 244, 0.16);
+  --color-text: #F5F5F4;
+  --color-text-muted: rgba(245, 245, 244, 0.6);
+  --color-text-subtle: rgba(245, 245, 244, 0.4);
+  --color-accent: #2DD4BF;
+  --color-accent-muted: rgba(45, 212, 191, 0.15);
+  --color-accent-glow: rgba(45, 212, 191, 0.3);
+
+  /* Team colors — desaturated, cinematic */
+  --color-team-1: #F87171;
+  --color-team-1-bg: rgba(248, 113, 113, 0.08);
+  --color-team-1-border: rgba(248, 113, 113, 0.25);
+  --color-team-2: #60A5FA;
+  --color-team-2-bg: rgba(96, 165, 250, 0.08);
+  --color-team-2-border: rgba(96, 165, 250, 0.25);
+  --color-team-3: #4ADE80;
+  --color-team-3-bg: rgba(74, 222, 128, 0.08);
+  --color-team-3-border: rgba(74, 222, 128, 0.25);
+
+  /* Feedback */
+  --color-success: #4ADE80;
+  --color-success-bg: rgba(74, 222, 128, 0.1);
+  --color-error: #F87171;
+  --color-error-bg: rgba(248, 113, 113, 0.1);
+  --color-warning: #FBBF24;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing (8pt grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ============================================
+   FOCUS STYLES (Accessibility)
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translateY(-20px) translateX(10px) scale(1.1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translateY(-10px) translateX(-10px) scale(0.9);
-    opacity: 0.3;
-  }
-  75% {
-    transform: translateY(-30px) translateX(5px) scale(1.05);
-    opacity: 0.4;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-
-.animate-confetti {
-  animation: confetti-fall 3s ease-in-out infinite;
-  top: -20px;
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.4s ease-out;
-}
-
-.animate-shake {
-  animation: shake 0.3s ease-in-out;
-}
-
-/* Скроллбар */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-border-strong);
   border-radius: 3px;
 }
 
-/* Глобальные стили */
-body {
-  overflow-x: hidden;
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.font-display {
+  font-family: var(--font-display);
 }
 
-button {
-  cursor: pointer;
+.font-body {
+  font-family: var(--font-body);
+}
+
+.text-measure {
+  max-width: 65ch;
+}
+
+/* Grain texture overlay */
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes confetti-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-glow); }
+  50% { box-shadow: 0 0 24px 4px var(--color-accent-glow); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-confetti {
+  animation: confetti-fall linear infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up var(--duration-slow) var(--ease-out) both;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out) both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   TOUCH TARGETS (min 44x44)
+   ============================================ */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

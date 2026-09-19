@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+/* ============================================
+   PREMIUM DESIGN SYSTEM — SEMANTIC TOKENS
+   ============================================ */
+
+/* Dark theme (default) — "Deep Earth" */
+[data-theme="dark"] {
+  --bg-primary: #0C0A09;
+  --bg-secondary: #1C1917;
+  --bg-tertiary: #292524;
+  --bg-elevated: #363330;
+  
+  --text-primary: #F5F5F4;
+  --text-secondary: #E7E5E4;
+  --text-muted: #A8A29E;
+  --text-subtle: #78716C;
+  
+  --accent-primary: #2DD4BF;
+  --accent-secondary: #5EEAD4;
+  --accent-glow: #99F6E4;
+  --accent-muted: rgba(45, 212, 191, 0.12);
+  --accent-border: rgba(45, 212, 191, 0.25);
+  
+  --team-1: #F87171;
+  --team-1-bg: rgba(248, 113, 113, 0.08);
+  --team-1-border: rgba(248, 113, 113, 0.3);
+  --team-1-glow: rgba(248, 113, 113, 0.15);
+  
+  --team-2: #60A5FA;
+  --team-2-bg: rgba(96, 165, 250, 0.08);
+  --team-2-border: rgba(96, 165, 250, 0.3);
+  --team-2-glow: rgba(96, 165, 250, 0.15);
+  
+  --team-3: #4ADE80;
+  --team-3-bg: rgba(74, 222, 128, 0.08);
+  --team-3-border: rgba(74, 222, 128, 0.3);
+  --team-3-glow: rgba(74, 222, 128, 0.15);
+  
+  --success: #4ADE80;
+  --success-bg: rgba(74, 222, 128, 0.12);
+  --error: #F87171;
+  --error-bg: rgba(248, 113, 113, 0.12);
+  --warning: #FBBF24;
+  
+  --border-subtle: rgba(245, 245, 244, 0.06);
+  --border-medium: rgba(245, 245, 244, 0.12);
+  --border-strong: rgba(245, 245, 244, 0.2);
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(45, 212, 191, 0.15);
+}
+
+/* Light theme — "Warm Stone" */
+[data-theme="light"] {
+  --bg-primary: #FAFAF9;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F5F5F4;
+  --bg-elevated: #FFFFFF;
+  
+  --text-primary: #1C1917;
+  --text-secondary: #44403C;
+  --text-muted: #78716C;
+  --text-subtle: #A8A29E;
+  
+  --accent-primary: #0F766E;
+  --accent-secondary: #14B8A6;
+  --accent-glow: #2DD4BF;
+  --accent-muted: rgba(15, 118, 110, 0.08);
+  --accent-border: rgba(15, 118, 110, 0.2);
+  
+  --team-1: #DC2626;
+  --team-1-bg: rgba(220, 38, 38, 0.06);
+  --team-1-border: rgba(220, 38, 38, 0.25);
+  --team-1-glow: rgba(220, 38, 38, 0.1);
+  
+  --team-2: #2563EB;
+  --team-2-bg: rgba(37, 99, 235, 0.06);
+  --team-2-border: rgba(37, 99, 235, 0.25);
+  --team-2-glow: rgba(37, 99, 235, 0.1);
+  
+  --team-3: #059669;
+  --team-3-bg: rgba(5, 150, 105, 0.06);
+  --team-3-border: rgba(5, 150, 105, 0.25);
+  --team-3-glow: rgba(5, 150, 105, 0.1);
+  
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.1);
+  --error: #DC2626;
+  --error-bg: rgba(220, 38, 38, 0.1);
+  --warning: #D97706;
+  
+  --border-subtle: #E7E5E4;
+  --border-medium: #D6D3D1;
+  --border-strong: #A8A29E;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 40px rgba(15, 118, 110, 0.1);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.text-measure {
+  max-width: 65ch;
+}
+
+/* ============================================
+   FOCUS STATES (Accessibility)
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes confetti-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    opacity: 1;
+  }
+  50% { 
+    box-shadow: 0 0 20px 8px var(--accent-glow);
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-10px) translateX(-10px); }
+  75% { transform: translateY(-30px) translateX(5px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-confetti {
+  animation: confetti-fall linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* ============================================
+   TOUCH TARGETS (min 44x44)
+   ============================================ */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.glass {
+  background: rgba(28, 25, 23, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.glow-accent {
+  box-shadow: 0 0 40px var(--accent-glow);
+}
+
+.glow-team-1 {
+  box-shadow: 0 0 30px var(--team-1-glow);
+}
+
+.glow-team-2 {
+  box-shadow: 0 0 30px var(--team-2-glow);
+}
+
+.glow-team-3 {
+  box-shadow: 0 0 30px var(--team-3-glow);
+}
+
+/* Safe areas for mobile */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-left { padding-left: env(safe-area-inset-left); }
+  .safe-right { padding-right: env(safe-area-inset-right); }
+}

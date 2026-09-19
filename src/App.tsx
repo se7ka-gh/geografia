@@ -34,6 +34,11 @@ const flagQuestions: FlagQuestion[] = [
   { flagCode: 'eg', options: ['Ливия', 'Египет', 'Судан', 'Саудовская Аравия'], correct: 1, funFact: 'Орёл Саладина на гербе — символ силы и отваги с XIII века.' },
   { flagCode: 'mx', options: ['Мексика', 'Испания', 'Португалия', 'Колумбия'], correct: 0, funFact: 'Орёл на кактусе — ацтекская легенда об основании Теночтитлана.' },
   { flagCode: 'kr', options: ['Япония', 'Китай', 'Южная Корея', 'Таиланд'], correct: 2, funFact: 'Тхыгук — символ инь и ян, окружённый четырьмя триграммами.' },
+  // Сложные
+  { flagCode: 'nz', options: ['Австралия', 'Новая Зеландия', 'Фиджи', 'Самоа'], correct: 1, funFact: 'Флаг Новой Зеландии содержит созвездие Южного Креста.' },
+  { flagCode: 'se', options: ['Норвегия', 'Дания', 'Швеция', 'Финляндия'], correct: 2, funFact: 'Скандинавский крест на флаге символизирует христианство.' },
+  { flagCode: 'ar', options: ['Уругвай', 'Чили', 'Аргентина', 'Парагвай'], correct: 2, funFact: 'Солнце Мая на флаге — символ независимости от Испании.' },
+  { flagCode: 'th', options: ['Вьетнам', 'Камбоджа', 'Лаос', 'Таиланд'], correct: 3, funFact: 'Таиланд — единственная страна Юго-Восточной Азии, не бывшая колонией.' },
 ];
 
 const trueFalseQuestions: TrueFalseQuestion[] = [
@@ -45,6 +50,11 @@ const trueFalseQuestions: TrueFalseQuestion[] = [
   { statement: 'Байкал содержит 20% всей пресной воды планеты', isTrue: true, explanation: 'Глубина 1642 м — самое глубокое озеро на Земле.' },
   { statement: 'В Исландии нет комаров', isTrue: true, explanation: 'Резкие перепады температуры нарушают жизненный цикл насекомых.' },
   { statement: 'Великая Китайская стена видна из космоса', isTrue: false, explanation: 'Миф: стена слишком узка для наблюдения с орбиты.' },
+  // Сложные
+  { statement: 'В Атлантическом океане больше воды, чем в Тихом', isTrue: false, explanation: 'Тихий океан — крупнейший, занимает треть поверхности Земли.' },
+  { statement: 'Сахара — самая большая пустыня в мире', isTrue: false, explanation: 'Антарктида технически является пустыней и больше Сахары.' },
+  { statement: 'Венесуэла имеет самый высокий водопад в мире', isTrue: true, explanation: 'Анхель — 979 метров, выше Эйфелевой башни в 3 раза.' },
+  { statement: 'Россия граничит с 14 странами', isTrue: true, explanation: 'Рекорд: ни одна другая страна не граничит с таким количеством государств.' },
 ];
 
 const emojiQuestions: EmojiQuestion[] = [
@@ -55,6 +65,10 @@ const emojiQuestions: EmojiQuestion[] = [
   { emojis: '🍣 🌸 ⛩️', options: ['Китай', 'Таиланд', 'Япония', 'Корея'], correct: 2 },
   { emojis: '🏛️ 🫒 🎭', options: ['Италия', 'Греция', 'Турция', 'Хорватия'], correct: 1 },
   { emojis: '🌮 🏖️ 💀', options: ['Бразилия', 'Мексика', 'Куба', 'Колумбия'], correct: 1 },
+  // Сложные
+  { emojis: '🏔️ 🧘 🐘', options: ['Индия', 'Непал', 'Тибет', 'Бутан'], correct: 1 },
+  { emojis: '🌋 🏝️ 🌺', options: ['Индонезия', 'Филиппины', 'Гавайи', 'Мадагаскар'], correct: 0 },
+  { emojis: '🏰 🧇 🍺', options: ['Германия', 'Бельгия', 'Нидерланды', 'Швейцария'], correct: 1 },
 ];
 
 const photoQuestions: PhotoQuestion[] = [
@@ -66,6 +80,11 @@ const photoQuestions: PhotoQuestion[] = [
   { image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=800&q=80', hint: 'Древний город в облаках, затерянный в горах', options: ['Боливия', 'Перу', 'Эквадор', 'Мексика'], correct: 1, funFact: 'Мачу-Пикчу был «открыт заново» американским историком в 1911 году.' },
   { image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', hint: 'Масштабное фортификационное сооружение через горы', options: ['Монголия', 'Корея', 'Китай', 'Япония'], correct: 2, funFact: 'Общая длина — более 21 000 км. Строительство длилось два тысячелетия.' },
   { image: 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=800&q=80', hint: 'Античный храм с мраморными колоннами', options: ['Рим', 'Афины', 'Стамбул', 'Каир'], correct: 1, funFact: 'Парфенон построен в 438 году до н.э. — ему более 2 400 лет.' },
+  // Сложные
+  { image: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', hint: 'Бело-мраморный мавзолей с куполом', options: ['Пакистан', 'Индия', 'Иран', 'Турция'], correct: 1, funFact: 'Тадж-Махал построен императором в память о любимой жене.' },
+  { image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&q=80', hint: 'Водопад на границе двух стран', options: ['Бразилия/Аргентина', 'США/Канада', 'Замбия/Зимбабве', 'Венесуэла/Гайана'], correct: 0, funFact: 'Игуасу — система из 275 водопадов шириной 2,7 км.' },
+  { image: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=800&q=80', hint: 'Древний город, высеченный в скалах', options: ['Иордания', 'Йемен', 'Оман', 'Саудовская Аравия'], correct: 0, funFact: 'Петра — столица Набатейского царства, высечена в розовых скалах.' },
+  { image: 'https://images.unsplash.com/photo-1549144511-f099e773c147?w=800&q=80', hint: 'Город с видом на залив и мост', options: ['Рио-де-Жанейро', 'Кейптаун', 'Сидней', 'Сан-Франциско'], correct: 2, funFact: 'Оперный театр в Сиднее — шедевр экспрессионизма XX века.' },
 ];
 
 // ============================================
@@ -96,12 +115,10 @@ export default function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [teamAnswers, setTeamAnswers] = useState<TeamAnswers>({ team1: null, team2: null, team3: null });
-  const [roundScores, setRoundScores] = useState<Scores>({ team1: 0, team2: 0, team3: 0 });
   const [currentRound, setCurrentRound] = useState(1);
   const [confetti, setConfetti] = useState(false);
   const [timer, setTimer] = useState(ROUND_TIME);
   const [timerActive, setTimerActive] = useState(false);
-  const [shakeCorrect, setShakeCorrect] = useState<Team | null>(null);
   const teamAnswersRef = useRef<TeamAnswers>({ team1: null, team2: null, team3: null });
 
   useEffect(() => { teamAnswersRef.current = teamAnswers; }, [teamAnswers]);
@@ -154,26 +171,23 @@ export default function App() {
     return () => clearTimeout(id);
   }, [timer, timerActive]);
 
-  const calculateScores = useCallback((answers: TeamAnswers) => {
-    const questions = getQuestions();
-    const q = questions[currentQuestion];
-    const newRoundScores: Scores = { team1: 0, team2: 0, team3: 0 };
-    (['team1', 'team2', 'team3'] as Team[]).forEach(team => {
-      if (answers[team] === q.correct) {
-        newRoundScores[team] = 1;
-        setShakeCorrect(team);
-        setTimeout(() => setShakeCorrect(null), 800);
-      }
-    });
-    return newRoundScores;
-  }, [currentQuestion, currentRound]);
-
   const showResults = useCallback((answers: TeamAnswers) => {
     setShowResult(true);
     setTimerActive(false);
-    const newRoundScores = calculateScores(answers);
-    setRoundScores(newRoundScores);
-  }, [calculateScores]);
+    
+    // Сразу добавляем очки к общему счёту
+    const questions = getQuestions();
+    const q = questions[currentQuestion];
+    const newScores = { ...scores };
+    
+    (['team1', 'team2', 'team3'] as Team[]).forEach(team => {
+      if (answers[team] === q.correct) {
+        newScores[team] += 1;
+      }
+    });
+    
+    setScores(newScores);
+  }, [currentQuestion, currentRound, scores]);
 
   const selectAnswer = (team: Team, answerIdx: number) => {
     if (showResult) return;
@@ -192,13 +206,8 @@ export default function App() {
       setTeamAnswers({ team1: null, team2: null, team3: null });
       setTimer(ROUND_TIME);
       setTimerActive(false);
-      setRoundScores({ team1: 0, team2: 0, team3: 0 });
     } else {
-      setScores(prev => ({
-        team1: prev.team1 + roundScores.team1,
-        team2: prev.team2 + roundScores.team2,
-        team3: prev.team3 + roundScores.team3,
-      }));
+      // Раунд окончен
       if (currentRound < 4) {
         setCurrentRound(prev => prev + 1);
         setScreen('round-intro');
@@ -377,7 +386,6 @@ export default function App() {
                   setScreen(rounds[currentRound - 1]);
                   setCurrentQuestion(0);
                   setShowResult(false);
-                  setRoundScores({ team1: 0, team2: 0, team3: 0 });
                   setTeamAnswers({ team1: null, team2: null, team3: null });
                   setTimer(ROUND_TIME);
                   setTimerActive(false);
@@ -402,12 +410,10 @@ export default function App() {
             questions={getQuestions()}
             teamNames={teamNames}
             scores={scores}
-            roundScores={roundScores}
             timer={timer}
             timerActive={timerActive}
             showResult={showResult}
             teamAnswers={teamAnswers}
-            shakeCorrect={shakeCorrect}
             currentRound={currentRound}
             roundMeta={roundMeta}
             onSelectAnswer={selectAnswer}
@@ -496,7 +502,6 @@ export default function App() {
                 onClick={() => {
                   setScreen('start');
                   setScores({ team1: 0, team2: 0, team3: 0 });
-                  setRoundScores({ team1: 0, team2: 0, team3: 0 });
                   setCurrentRound(1);
                   setCurrentQuestion(0);
                   setConfetti(false);
@@ -518,19 +523,17 @@ export default function App() {
 // ============================================
 // GAME SCREEN COMPONENT
 // ============================================
-function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNames, scores, roundScores, timer, timerActive, showResult, teamAnswers, shakeCorrect, currentRound, roundMeta, onSelectAnswer, onNext }: {
+function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNames, scores, timer, timerActive, showResult, teamAnswers, currentRound, roundMeta, onSelectAnswer, onNext }: {
   screen: string;
   currentQuestion: number;
   totalQuestions: number;
   questions: { options: string[]; correct: number }[];
   teamNames: { team1: string; team2: string; team3: string };
   scores: Scores;
-  roundScores: Scores;
   timer: number;
   timerActive: boolean;
   showResult: boolean;
   teamAnswers: TeamAnswers;
-  shakeCorrect: Team | null;
   currentRound: number;
   roundMeta: { name: string; icon: any; desc: string }[];
   onSelectAnswer: (team: Team, idx: number) => void;
@@ -563,21 +566,20 @@ function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNa
         </div>
 
         <div className="flex items-center gap-4">
-          {(['team1', 'team2', 'team3'] as Team[]).map((team, i) => (
-            <div key={team} className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: shakeCorrect === team ? 'var(--color-success-bg)' : 'var(--color-surface)',
-                border: `1px solid ${shakeCorrect === team ? 'var(--color-success)' : 'var(--color-border)'}`,
-              }}>
-              <div className="w-2 h-2 rounded-full" style={{
-                background: [`var(--color-team-1)`, `var(--color-team-2)`, `var(--color-team-3)`][i]
-              }} />
-              <span className="text-sm font-mono font-bold" style={{ color: 'var(--color-text)' }}>
-                {scores[team] + roundScores[team]}
-              </span>
-            </div>
-          ))}
-        </div>
+            {(['team1', 'team2', 'team3'] as Team[]).map((team, i) => (
+              <div key={team} className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all"
+                style={{
+                  background: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
+                }}>
+                <div className="w-2 h-2 rounded-full" style={{
+                  background: [`var(--color-team-1)`, `var(--color-team-2)`, `var(--color-team-3)`][i]
+                }} />
+                <span className="text-sm font-mono font-bold" style={{ color: 'var(--color-text)' }}>
+                  {scores[team]}
+                </span>
+              </div>
+            ))}        </div>
       </header>
 
       {/* Question Area */}

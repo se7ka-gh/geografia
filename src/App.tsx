@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Flag, Sparkles, Camera, Map, Trophy, Play,
   ChevronRight, RotateCcw, Timer, Eye, Globe,
-  Sun, Moon, Target, Check, X
+  Target, Check, X
 } from 'lucide-react';
 
 // ============================================
@@ -11,7 +11,6 @@ import {
 // ============================================
 type GameScreen = 'start' | 'round-intro' | 'flag' | 'true-false' | 'emoji' | 'photo' | 'final';
 type Team = 'team1' | 'team2' | 'team3';
-type Theme = 'dark' | 'light';
 
 interface Scores { team1: number; team2: number; team3: number; }
 interface TeamAnswers { team1: number | null; team2: number | null; team3: number | null; }
@@ -106,7 +105,6 @@ const staggerItem = {
 // MAIN COMPONENT
 // ============================================
 export default function App() {
-  const [theme, setTheme] = useState<Theme>('dark');
   const [screen, setScreen] = useState<GameScreen>('start');
   const [teamNames, setTeamNames] = useState({ team1: 'Ряд 1', team2: 'Ряд 2', team3: 'Ряд 3' });
   const [scores, setScores] = useState<Scores>({ team1: 0, team2: 0, team3: 0 });
@@ -120,7 +118,7 @@ export default function App() {
   const teamAnswersRef = useRef<TeamAnswers>({ team1: null, team2: null, team3: null });
 
   useEffect(() => { teamAnswersRef.current = teamAnswers; }, [teamAnswers]);
-  useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
+  useEffect(() => { document.documentElement.setAttribute('data-theme', 'dark'); }, []);
 
   const rounds: GameScreen[] = ['flag', 'true-false', 'emoji', 'photo'];
   const roundMeta = [
@@ -175,12 +173,16 @@ export default function App() {
     setTimerActive(false);
     const questions = getQuestions();
     const q = questions[currentQuestion];
-    const newScores = { ...scores };
-    (['team1', 'team2', 'team3'] as Team[]).forEach(team => {
-      if (answers[team] === q.correct) newScores[team] += 1;
+    
+    // Используем функциональное обновление для актуальных значений
+    setScores(prev => {
+      const newScores = { ...prev };
+      (['team1', 'team2', 'team3'] as Team[]).forEach(team => {
+        if (answers[team] === q.correct) newScores[team] += 1;
+      });
+      return newScores;
     });
-    setScores(newScores);
-  }, [currentQuestion, currentRound, scores]);
+  }, [currentQuestion, currentRound]);
 
   const selectAnswer = (team: Team, answerIdx: number) => {
     if (showResult) return;
@@ -219,15 +221,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
-      {/* Theme Toggle */}
-      <button
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="fixed top-6 right-6 z-50 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110"
-        style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-medium)' }}
-        aria-label="Переключить тему"
-      >
-        {theme === 'dark' ? <Sun size={18} style={{ color: 'var(--text-primary)' }} strokeWidth={1.5} /> : <Moon size={18} style={{ color: 'var(--text-primary)' }} strokeWidth={1.5} />}
-      </button>
+
 
       <AnimatePresence mode="wait">
         {/* ===== START SCREEN ===== */}
@@ -292,7 +286,7 @@ export default function App() {
                   className="w-full flex items-center justify-center gap-3 py-4 px-8 rounded-xl font-medium text-base transition-all"
                   style={{
                     background: 'var(--accent-primary)',
-                    color: theme === 'dark' ? 'var(--bg-primary)' : '#FFFFFF',
+                    color: 'var(--bg-primary)',
                     boxShadow: 'var(--shadow-glow)',
                   }}
                 >
@@ -397,7 +391,7 @@ export default function App() {
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-medium transition-all"
                 style={{
                   background: 'var(--accent-primary)',
-                  color: theme === 'dark' ? 'var(--bg-primary)' : '#FFFFFF',
+                  color: 'var(--bg-primary)',
                   boxShadow: 'var(--shadow-glow)',
                 }}
               >
@@ -424,7 +418,6 @@ export default function App() {
             teamAnswers={teamAnswers}
             currentRound={currentRound}
             roundMeta={roundMeta}
-            theme={theme}
             onSelectAnswer={selectAnswer}
             onNext={nextQuestion}
           />
@@ -533,7 +526,7 @@ export default function App() {
 // ============================================
 // GAME SCREEN COMPONENT
 // ============================================
-function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNames, scores, timer, timerActive, showResult, teamAnswers, currentRound, roundMeta, theme, onSelectAnswer, onNext }: {
+function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNames, scores, timer, timerActive, showResult, teamAnswers, currentRound, roundMeta, onSelectAnswer, onNext }: {
   screen: string;
   currentQuestion: number;
   totalQuestions: number;
@@ -546,7 +539,6 @@ function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNa
   teamAnswers: TeamAnswers;
   currentRound: number;
   roundMeta: { name: string; icon: any; desc: string }[];
-  theme: Theme;
   onSelectAnswer: (team: Team, idx: number) => void;
   onNext: () => void;
 }) {
@@ -777,7 +769,7 @@ function GameScreen({ screen, currentQuestion, totalQuestions, questions, teamNa
                   className="touch-target inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium transition-all"
                   style={{
                     background: 'var(--accent-primary)',
-                    color: theme === 'dark' ? 'var(--bg-primary)' : '#FFFFFF',
+                    color: 'var(--bg-primary)',
                     boxShadow: 'var(--shadow-glow)',
                   }}
                 >
